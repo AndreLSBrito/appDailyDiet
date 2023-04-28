@@ -26,3 +26,18 @@ export const Profile = styled.Image`
   height: 40px;
 `
 
+export const SnackContainer = styled.View`
+  width: 100%;
+  height: 79px;
+  gap: 8px;
+  flex-direction: column;
+  margin: 40px 0
+`
+
+export const SnackText = styled.Text`
+align-items: flex-start;
+font-size: ${({theme}) => theme.FONT_SIZE.MD_16}px;
+font-family: ${({theme}) => theme.FONT_FAMILY.REGULAR};
+color: ${({theme}) => theme.COLORS.GRAY_100};
+`
+
