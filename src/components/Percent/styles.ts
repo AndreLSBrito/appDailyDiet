@@ -1,11 +1,13 @@
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import { ArrowUpRight } from "phosphor-react-native";
 
 export type PercentTypeStyleProps = 'ABOVE-AVERAGE' | 'BELOW-AVERAGE'
 
 type Props = {
   type: PercentTypeStyleProps
 }
+
 
 export const Container = styled(TouchableOpacity)<Props>`
   align-items: center;
@@ -26,4 +28,13 @@ export const Title = styled.Text`
 export const SubTitle = styled.Text`
   font-size: ${({theme}) => theme.FONT_SIZE.SM_14}px;
   font-family: ${({theme}) => theme.FONT_FAMILY.REGULAR};
+`
+
+export const Icon = styled(ArrowUpRight).attrs<Props>(({theme, type}) =>({
+  size: 24,
+  color: type === 'ABOVE-AVERAGE' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
+}))<Props>`
+  position: absolute;
+  left: 100%;
+  margin: 8px 0px;
 `
