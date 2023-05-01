@@ -2,7 +2,7 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { ArrowUpRight } from "phosphor-react-native";
 
-export type PercentTypeStyleProps = 'ABOVE-AVERAGE' | 'BELOW-AVERAGE'
+export type PercentTypeStyleProps = 'ABOVE-AVERAGE' | 'BELOW-AVERAGE' | 'DEFAULT'
 
 type Props = {
   type: PercentTypeStyleProps
