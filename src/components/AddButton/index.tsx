@@ -1,12 +1,13 @@
 import { ButtonText, Container, Icon } from "./styles";
+import { TouchableOpacityProps } from "react-native";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   text:string;
 }
 
-export function AddButton({text}:Props){
+export function AddButton({text, ...rest}:Props){
   return(
-    <Container>
+    <Container {...rest}>
       <Icon/>
       <ButtonText>
         {text}
