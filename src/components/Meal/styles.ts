@@ -36,7 +36,7 @@ export const Snack = styled.Text.attrs({
   numberOfLines: 1,
   ellipsizeMode: 'tail'
 })`
-  flex: 1;
+  width: 217px;
   font-size: ${({theme}) => theme.FONT_SIZE.MD_16}px;
   font-family: ${({theme}) => theme.FONT_FAMILY.REGULAR};
   color: ${({theme}) => theme.COLORS.GRAY_200};

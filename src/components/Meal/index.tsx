@@ -4,10 +4,11 @@ type Props = {
   time: string;
   meal: string;
   type: StatusStyleProps;
-
+  onRender?: () => void;
 }
 
 export function Meal({time, meal, type}:Props){
+  
   return(
     <Container>
       <Hour>
@@ -17,7 +18,7 @@ export function Meal({time, meal, type}:Props){
       <Divider/>
 
       <Snack>
-        {meal}
+       {meal}
       </Snack> 
 
       <Status type={type}/>  
