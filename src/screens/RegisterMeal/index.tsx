@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Header } from "../../components/Header";
-import { Container, Content,  DateTimeInput,  DescriptionInput, Form, FrameDate, FrameDateTime, FrameTime, Label, NameInput } from "./styles";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from "react-native-modal-datetime-picker";
+import { Header } from "../../components/Header";
+import { Container, Content,  DateTimeInput,  DescriptionInput, 
+          Form, FrameDate, ContainerRow, FrameTime, Label, NameInput, 
+          InDiet, OutDiet, Status 
+        } from "./styles";
+import { Button } from "../../components/Button";
+
 
 export function RegisterMeal(){
 
@@ -39,11 +43,12 @@ export function RegisterMeal(){
           </Label>
           <DescriptionInput multiline textAlignVertical="top"/>
           
-          <FrameDateTime>
+          <ContainerRow>
             <FrameDate>
               <Label>
                 Data
               </Label>
+
               <DateTimeInput
               value={date.toLocaleString()}  
               onChangeText={() => {setDatePickerVisibility(true); setDate('');}}
@@ -56,6 +61,7 @@ export function RegisterMeal(){
                <Label>
                 Hora
               </Label>
+
               <DateTimeInput
               value={time.toLocaleString()}  
               onPressIn={() => {setTimePickerVisibility(true); setTime('');}}
@@ -79,9 +85,30 @@ export function RegisterMeal(){
               onConfirm={(time) => handleConfirmTime(time)}
               onCancel={() => {console.log('cancelou'); setTimePickerVisibility(false);}}
             />
-          </FrameDateTime>
+          </ContainerRow>
 
+          <Label>
+            Está dentro da dieta?
+          </Label>
+
+          <ContainerRow>
+            <InDiet isActive={true}>
+              <Status type='IN-DIET'/>
+              <Label>
+                Sim
+              </Label>
+            </InDiet>
+
+            <OutDiet isActive={false}>
+              <Status type='OUT-DIET'/>
+              <Label>
+                Não
+              </Label>
+            </OutDiet>
+          </ContainerRow>
         </Form>
+
+        <Button text="Cadastrar refeição" />
       </Content>
     </Container>
   );
