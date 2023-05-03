@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Header } from "../../components/Header";
 import { Container, Content,  DateTimeInput,  DescriptionInput, 
@@ -10,6 +11,7 @@ import { Button } from "../../components/Button";
 
 export function RegisterMeal(){
 
+  const navigation = useNavigation()
   const [date,setDate] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -27,6 +29,10 @@ export function RegisterMeal(){
     setTime(time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }))
     setTimePickerVisibility(false)
   };
+
+  function handleNewMeal(){
+    navigation.navigate('feedback', {type: 'OUT-DIET'})
+  }
 
   return(
     <Container>
@@ -108,7 +114,7 @@ export function RegisterMeal(){
           </ContainerRow>
         </Form>
 
-        <Button text="Cadastrar refeição" />
+        <Button text="Cadastrar refeição" onPress={handleNewMeal}/>
       </Content>
     </Container>
   );
