@@ -2,10 +2,11 @@ import { Container, Title, Icon } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { PercentTypeStyleProps } from "../Percent/styles";
 import {TouchableOpacity} from 'react-native'
+import { StatusStyleProps } from "../Meal/styles";
 
 type Props = {
   title ?: string;
-  type: PercentTypeStyleProps 
+  type: PercentTypeStyleProps | StatusStyleProps
 }
 
 export function Header({title='', type}:Props){

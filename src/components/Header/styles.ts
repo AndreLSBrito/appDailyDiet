@@ -1,9 +1,10 @@
 import styled from "styled-components/native";
 import { ArrowLeft } from "phosphor-react-native";
 import { PercentTypeStyleProps } from "../Percent/styles";
+import { StatusStyleProps } from "../Meal/styles";
 
 type Props = {
-  type: PercentTypeStyleProps
+  type: PercentTypeStyleProps | StatusStyleProps
 }
 
 
@@ -26,5 +27,5 @@ export const Title = styled.Text`
 
 export const Icon = styled(ArrowLeft).attrs<Props>(({theme, type}) => ({
   size: 24,
-  color: type === 'DEFAULT' ? theme.COLORS.GRAY_100 : type === 'ABOVE-AVERAGE' ?theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
+  color: type === 'DEFAULT' ? theme.COLORS.GRAY_100 : type === 'ABOVE-AVERAGE' || 'IN-DIET' ?theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
 }))<Props>``
