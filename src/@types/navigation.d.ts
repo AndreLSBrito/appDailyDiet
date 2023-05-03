@@ -1,3 +1,4 @@
+import { StatusStyleProps } from "../components/Meal/styles";
 import { PercentTypeStyleProps } from "../components/Percent/styles"; 
 
 export declare global {
@@ -5,6 +6,9 @@ export declare global {
     interface RootParamList {
       home: undefined;
       new: undefined;
+      feedback: {
+        type: StatusStyleProps;
+      }
       statistic: {
         type: PercentTypeStyleProps;
       }
