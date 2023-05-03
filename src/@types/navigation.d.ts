@@ -6,6 +6,9 @@ export declare global {
     interface RootParamList {
       home: undefined;
       new: undefined;
+      getMeal: {
+        type: StatusStyleProps;
+      }
       feedback: {
         type: StatusStyleProps;
       }
