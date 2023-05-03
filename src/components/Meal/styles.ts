@@ -1,3 +1,4 @@
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
 export type StatusStyleProps = 'IN-DIET' | 'OUT-DIET'
@@ -6,7 +7,7 @@ type Props ={
   type: StatusStyleProps
 }
 
-export const Container = styled.View`
+export const Container = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
   width: 100%;

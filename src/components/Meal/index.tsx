@@ -1,16 +1,17 @@
+import { TouchableOpacityProps } from "react-native";
 import { Container, Divider, Hour, Snack, Status, StatusStyleProps } from "./styles";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   time: string;
   meal: string;
   type: StatusStyleProps;
   onRender?: () => void;
 }
 
-export function Meal({time, meal, type}:Props){
+export function Meal({time, meal, type, ...rest}:Props){
   
   return(
-    <Container>
+    <Container {...rest}>
       <Hour>
         {time}
       </Hour>
