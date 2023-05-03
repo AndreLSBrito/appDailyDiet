@@ -79,6 +79,10 @@ export function Home(){
     navigation.navigate('new')
   }
 
+  function handleGetMeal(){
+    navigation.navigate('getMeal', {type: 'IN-DIET'})
+  }
+
   return(
     <Container>
       <HeaderHome>
@@ -99,7 +103,7 @@ export function Home(){
         sections={DATA}
         keyExtractor={({id}) => String(id)}
         renderItem={({item}) => (
-          <Meal time={item.time} meal={item.meal} type={item.type} onRender={() => console.log('asdasdasdasd')}/>
+          <Meal time={item.time} meal={item.meal} type={item.type} onPress={handleGetMeal} onRender={() => console.log('asdasdasdasd')}/>
         
         )}
         renderSectionHeader={({section: {date}}) => (
