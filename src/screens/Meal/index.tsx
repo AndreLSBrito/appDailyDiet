@@ -1,12 +1,26 @@
-import { Text } from "react-native";
 import { Header } from "../../components/Header";
 import { Content, Label, Status } from "../RegisterMeal/styles";
-import { Container, Description, DietInformation, FrameButton, MealTitle, TextStatus, TimeTitle } from "./styles";
+import { Container, Description, DietInformation, FrameButton, ModalButtonContainer, MealTitle, Modal, ModalText, ModalView, TextStatus, TimeTitle, CenteredView } from "./styles";
+import { EditButton } from "../../components/EditButton";
+import { RemoveButton } from "../../components/RemoveButton";
+import { useNavigation } from "@react-navigation/native";
 import { Button } from "../../components/Button";
-import { AddButton } from "../../components/AddButton";
+import { Alert } from "react-native";
 
 
 export function Meal(){
+
+  const navigation = useNavigation()
+
+  function handleEditMeal(){
+    navigation.navigate('new')
+  }
+
+  function handleRemoveMeal(){
+    console.log('excluir refeição')
+    navigation.navigate('home')
+  }
+
   return(
     <Container type="IN-DIET">
       <Header title="Refeição" type="IN-DIET"/>
@@ -33,9 +47,34 @@ export function Meal(){
         </DietInformation>
 
         <FrameButton>
-          <AddButton text="Excluir refeição"/>
-          <Button text="Editar refeição" type="SECONDARY"/>
+          <EditButton text="Editar refeição" onPress={handleEditMeal}/>
+          <RemoveButton text="Excluir refeição" onPress={handleRemoveMeal}/>
         </FrameButton>
+
+        
+          <Modal 
+            visible={true} 
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              // setModalVisible(!modalVisible);
+            }}
+          
+          >
+            <CenteredView>
+              <ModalView>
+                <ModalText>
+                  Deseja realmente excluir o registro da refeição?
+                </ModalText>
+
+                <ModalButtonContainer>
+                  <Button text="Cancel" type="SECONDARY"/>
+                  <Button text="Sim, excluir"/>
+                </ModalButtonContainer>
+              </ModalView>
+            </CenteredView>
+          </Modal>
+        
+       
         
       </Content>
     </Container>
