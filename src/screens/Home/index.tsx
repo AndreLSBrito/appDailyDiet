@@ -1,23 +1,31 @@
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation, useFocusEffect} from '@react-navigation/native'
+import { useState, useCallback } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from 'react-native';
 import { Container, HeaderHome, HeaderSectionList, Logo, Profile, SnackContainer, SnackText } from "./styles";
 
 import logoImg from '../../assets/logo.png'
 import profileImg from '../../assets/profile.png'
 
 import { Meal } from "../../components/Meal";
-import { SectionList, Text } from "react-native";
+import { SectionList } from "react-native";
 import { Percent } from "../../components/Percent";
 import { AddButton } from "../../components/AddButton";
 import { StatusStyleProps } from "../../components/Meal/styles";
+import { mealGetAllSectionByKey } from '../../storage/Meal/mealGetAllSectionByKey';
+import { mealStorageDTO } from '../../storage/Meal/mealStorageDTO';
 
 export function Home(){
 
   const navigation = useNavigation()
+  const [meals, setMeals] = useState<(IData | undefined)[]>([])
+
 
   interface IDataItem {
     id: number;
     time: string;
-    meal: string;
+    name: string;
+    description: string;
     type: StatusStyleProps;
   }
   
@@ -26,62 +34,49 @@ export function Home(){
     data: IDataItem[];
   }
 
-  const DATA: IData[] = [
-    {
-      date: '28/04/2023',
-      data:[
-        {
-          id: 1,
-          time: '20:00',
-          meal: 'X-banana',
-          type: 'IN-DIET'
-        },
-        {
-          id: 2,
-          time: '21:00',
-          meal: 'X-maca',
-          type: 'OUT-DIET'
-        },
-        {
-          id: 3,
-          time: '20:00',
-          meal: 'X-pera',
-          type: 'OUT-DIET'
-        }
-      ]
-    },
-    {
-      date: '28/04/2023',
-      data: [
-        {
-          id: 4,
-          time: '20:00',
-          meal: 'X-tudo',
-          type: 'OUT-DIET'
-        }
-      ]
-    },
-    {
-      date: '28/04/2023',
-      data: []
-    },
-    {
-      date: '28/04/2023',
-      data: []
-    },
-  ]
+  async function loadData(){
+    try {
+      const storage = await mealGetAllSectionByKey()
+      if (storage !== undefined && storage !== null) {
+        setMeals(storage);
+      } else {
+        setMeals([]);
+      }
+      // const keys = await AsyncStorage.getAllKeys();
+      //    await AsyncStorage.multiRemove(keys);
+    
+    }  catch (error) {
+      Alert.alert('Ops..', 'Não foi possível carregar as refeições');
+      console.log(error)
+    }
+   
+  }
 
+//   const clearAppData = async function() {
+//     try {
+//         const keys = await AsyncStorage.getAllKeys();
+//         await AsyncStorage.multiRemove(keys);
+//     } catch (error) {
+//         console.error('Error clearing app data.');
+//     }
+// }
+  
   function handleStatistic(){
-    navigation.navigate('statistic', {type: "ABOVE-AVERAGE"})
+    // navigation.navigate('statistic', {type: "ABOVE-AVERAGE"})
+    console.log(meals)
   }
 
   function handleNewMeal(){
-    navigation.navigate('new')
+    navigation.navigate('new', {id: 0})
   }
 
-  function handleGetMeal(){
-    navigation.navigate('getMeal', {type: 'IN-DIET'})
+  function handleGetMeal(id:number){
+    navigation.navigate('getMeal', {id})
   }
+
+  useFocusEffect(useCallback(() => {
+    loadData();
+  }, []));
 
   return(
     <Container>
@@ -100,10 +95,16 @@ export function Home(){
       </SnackContainer>
 
       <SectionList
-        sections={DATA}
+        sections={meals ?? []}
         keyExtractor={({id}) => String(id)}
         renderItem={({item}) => (
-          <Meal time={item.time} meal={item.meal} type={item.type} onPress={handleGetMeal} onRender={() => console.log('asdasdasdasd')}/>
+          <Meal 
+            time={item.time} 
+            meal={item.name} 
+            type={item.type} 
+            onPress={() => handleGetMeal(item.id)} 
+            onRender={() => console.log('asdasdasdasd')
+          }/>
         
         )}
         renderSectionHeader={({section: {date}}) => (

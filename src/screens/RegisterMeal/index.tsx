@@ -1,37 +1,89 @@
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Header } from "../../components/Header";
 import { Container, Content,  DateTimeInput,  DescriptionInput, 
           Form, FrameDate, ContainerRow, FrameTime, Label, NameInput, 
-          InDiet, OutDiet, Status 
+          InDiet, OutDiet, Status, DietStyleProps 
         } from "./styles";
 import { Button } from "../../components/Button";
+import { StatusStyleProps } from "../../components/Meal/styles";
+import { mealAddNewMeal } from "../../storage/Meal/mealAddNewMeal";
+import { Hamburger } from "phosphor-react-native";
+import { mealGetAll } from "../../storage/Meal/mealGetAll";
 
+
+type RouteParams = {
+  id: number;
+}
 
 export function RegisterMeal(){
-
-  const navigation = useNavigation()
+  const route = useRoute();
+  const navigation = useNavigation();
+  const {id} = route.params as RouteParams
+  
+  const [name,setName] = useState('');
   const [date,setDate] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
   const [time,setTime] = useState('');
+  const [description,setDescription] = useState('');
+  const [inDietActive,setInDietActive] = useState(false);
+  const [outDietActive,setOutDietActive] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+ 
+  const type = inDietActive ? 'IN-DIET' : outDietActive ? 'OUT-DIET' : undefined
+  
+  
+  function fecthMeal(id:number){
+    if(id !== 0){
+      
+    }
+  }
 
-  const handleConfirm = (date:Date) => {
+  function handleSetActiveInDiet(){
+    setInDietActive(!inDietActive)
+    if(outDietActive){
+      setOutDietActive(false)
+    }
+  }
+
+  function handleSetActiveOutDiet(){
+    setOutDietActive(!outDietActive)
+    if(inDietActive){
+      setInDietActive(false)
+    }
+  }
+  
+  function handleConfirmDate(date:Date){
     console.log("A date has been picked: ", date.toLocaleDateString());
     setDate(date.toLocaleDateString())
     setDatePickerVisibility(false)
   };
 
-  const handleConfirmTime = (time:Date) => {
+  function handleConfirmTime(time:Date){
     console.log("A date has been picked: ", time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }));
     setTime(time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }))
     setTimePickerVisibility(false)
   };
 
-  function handleNewMeal(){
-    navigation.navigate('feedback', {type: 'OUT-DIET'})
+  async function handleNewMeal(){
+    try {
+      const storedMeals = await mealGetAll()
+      const lastId: number = storedMeals?.reduce((maxId, meal) => Math.max(meal.id, maxId), 0) ?? 0 ;
+      await mealAddNewMeal({
+        id: (lastId + 1),
+        name: name,
+        description: description,
+        time: time.toLocaleString(),
+        date: date.toLocaleString(),
+        type: type
+        }
+      )
+      navigation.navigate('feedback', {type})
+    } catch (error) {
+      console.log('Não foi possível criar a refeição')
+    }
+    
   }
 
   return(
@@ -42,12 +94,17 @@ export function RegisterMeal(){
           <Label>
           Nome
           </Label>
-          <NameInput/>
+          <NameInput value={name} onChangeText={setName}/>
           
           <Label>
           Descrição
           </Label>
-          <DescriptionInput multiline textAlignVertical="top"/>
+          <DescriptionInput 
+            multiline 
+            textAlignVertical="top" 
+            value={description} 
+            onChangeText={setDescription}
+          />
           
           <ContainerRow>
             <FrameDate>
@@ -81,7 +138,7 @@ export function RegisterMeal(){
             <DateTimePickerModal 
               isVisible={isDatePickerVisible}
               mode="date"
-              onConfirm={(date) => handleConfirm(date)}
+              onConfirm={(date) => handleConfirmDate(date)}
               onCancel={() => {console.log('cancelou'); setDatePickerVisibility(false);}}
             />
             {/* componentente para renderizar o modal de hora  */}
@@ -98,14 +155,14 @@ export function RegisterMeal(){
           </Label>
 
           <ContainerRow>
-            <InDiet isActive={true}>
+            <InDiet isActive={inDietActive} onPress={handleSetActiveInDiet}>
               <Status type='IN-DIET'/>
               <Label>
                 Sim
               </Label>
             </InDiet>
 
-            <OutDiet isActive={false}>
+            <OutDiet isActive={outDietActive} onPress={handleSetActiveOutDiet}>
               <Status type='OUT-DIET'/>
               <Label>
                 Não
