@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
-export type StatusStyleProps = 'IN-DIET' | 'OUT-DIET'
+export type StatusStyleProps = 'IN-DIET' | 'OUT-DIET' | undefined
 
 type Props ={
   type: StatusStyleProps
