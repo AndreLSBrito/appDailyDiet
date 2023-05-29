@@ -25,7 +25,12 @@ export const Title = styled.Text`
   color: ${({theme}) => theme.COLORS.GRAY_100};
 `
 
-export const Icon = styled(ArrowLeft).attrs<Props>(({theme, type}) => ({
+export const Icon = styled(ArrowLeft).attrs<Props>(({ theme, type }) => ({
   size: 24,
-  color: type === 'DEFAULT' ? theme.COLORS.GRAY_100 : type === 'ABOVE-AVERAGE' || 'IN-DIET' ?theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
-}))<Props>``
+  color:
+    type === 'DEFAULT'
+      ? theme.COLORS.GRAY_100
+      : type === 'ABOVE-AVERAGE' || type === 'IN-DIET'
+      ? theme.COLORS.GREEN_DARK
+      : theme.COLORS.RED_DARK,
+}))<Props>``;
