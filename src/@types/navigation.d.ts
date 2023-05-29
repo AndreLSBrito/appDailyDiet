@@ -5,9 +5,11 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       home: undefined;
-      new: undefined;
+      new: {
+        id: number;
+      }
       getMeal: {
-        type: StatusStyleProps;
+        id: number,
       }
       feedback: {
         type: StatusStyleProps;
