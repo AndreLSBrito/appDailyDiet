@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Header } from "../../components/Header";
@@ -7,10 +7,9 @@ import { Container, Content,  DateTimeInput,  DescriptionInput,
           InDiet, OutDiet, Status, DietStyleProps 
         } from "./styles";
 import { Button } from "../../components/Button";
-import { StatusStyleProps } from "../../components/Meal/styles";
 import { mealAddNewMeal } from "../../storage/Meal/mealAddNewMeal";
-import { Hamburger } from "phosphor-react-native";
 import { mealGetAll } from "../../storage/Meal/mealGetAll";
+import { mealGetById } from "../../storage/Meal/mealGetById";
 
 
 type RouteParams = {
@@ -34,9 +33,22 @@ export function RegisterMeal(){
   const type = inDietActive ? 'IN-DIET' : outDietActive ? 'OUT-DIET' : undefined
   
   
-  function fecthMeal(id:number){
+  async function fecthMeal(id:number){
     if(id !== 0){
-      
+      const storage = await mealGetById(id);
+      if (storage !==undefined){
+        setName(storage.name);
+        setDescription(storage.description);
+        setDate(storage.date);
+        setTime(storage.time);
+        if(storage.type ==="IN-DIET"){
+          setInDietActive(true);
+          setOutDietActive(false);
+        }else{
+          setInDietActive(false);
+          setOutDietActive(true);
+        }
+      }
     }
   }
 
@@ -86,9 +98,17 @@ export function RegisterMeal(){
     
   }
 
+  async function handleEditMeal(){
+
+  }
+
+  useEffect(()=>{
+    fecthMeal(id)
+  },[]);
+
   return(
     <Container>
-      <Header title="Nova refeição" type="DEFAULT"/>
+      <Header title={id===0?'Nova refeição':'Editar refeição'} type="DEFAULT"/>
       <Content>
         <Form>
           <Label>
@@ -171,7 +191,7 @@ export function RegisterMeal(){
           </ContainerRow>
         </Form>
 
-        <Button text="Cadastrar refeição" onPress={handleNewMeal}/>
+        <Button text={id===0?'Cadastrar refeição':'Salvar alterações'} onPress={() => (id===0?handleNewMeal():handleEditMeal())}/>
       </Content>
     </Container>
   );
