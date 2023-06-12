@@ -39,8 +39,6 @@ export function Home(){
       } else {
         setMeals([]);
       }
-      
-    
     }  catch (error) {
       Alert.alert('Ops..', 'Não foi possível carregar as refeições');
       console.log(error)
