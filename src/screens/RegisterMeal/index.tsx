@@ -10,6 +10,9 @@ import { Button } from "../../components/Button";
 import { mealAddNewMeal } from "../../storage/Meal/mealAddNewMeal";
 import { mealGetAll } from "../../storage/Meal/mealGetAll";
 import { mealGetById } from "../../storage/Meal/mealGetById";
+import { mealEditMeal } from "../../storage/Meal/mealEditMeal";
+import { Alert } from "react-native";
+import { mealStorageDTO } from "../../storage/Meal/mealStorageDTO";
 
 
 type RouteParams = {
@@ -73,7 +76,7 @@ export function RegisterMeal(){
   };
 
   function handleConfirmTime(time:Date){
-    console.log("A date has been picked: ", time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }));
+    console.log("A time has been picked: ", time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }));
     setTime(time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }))
     setTimePickerVisibility(false)
   };
@@ -99,7 +102,24 @@ export function RegisterMeal(){
   }
 
   async function handleEditMeal(){
-
+    try {
+      const mealEdited:mealStorageDTO = {
+        id: id,
+        name: name,
+        description: description,
+        time: time.toLocaleString(),
+        date: date.toLocaleString(),
+        type: type
+      }
+      if(mealEdited.type === undefined){
+        return Alert.alert('Ops...','Informe se a refeição faz parte de sua dieta!')
+      }
+      await mealEditMeal(mealEdited)
+      Alert.alert('Refeição alterada','Sua refeição foi alterada com sucesso!')
+      navigation.navigate('home')
+    } catch (error) {
+      Alert.alert('Ops...','Não foi possível editar sua refeição, tente mais tarde!')
+    }
   }
 
   useEffect(()=>{
