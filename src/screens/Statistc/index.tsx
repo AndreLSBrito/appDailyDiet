@@ -1,10 +1,11 @@
+import { useRoute } from "@react-navigation/native";
 import { Container, AvaregeStatistc, TextStatistc, Content, Title, NumberStatistc, ContentStatistc, SequenceCard, Frame, InDietCard, OutDietCard } from "./styles";
-import { useNavigation } from "@react-navigation/native";
 
 import { Header } from "../../components/Header";
 import { mealGetAll } from "../../storage/Meal/mealGetAll";
 import { mealStorageDTO } from "../../storage/Meal/mealStorageDTO";
 import { useEffect, useState } from "react";
+import { PercentTypeStyleProps } from "../../components/Percent/styles";
 
 export type IStatistcProps = {
   amountMeals: number;
@@ -44,8 +45,6 @@ export async function calculateStatistc(){
         mealsOutDiet,
         bestSequenceOnDiet
       }
-      console.log(result)
-      
     }
 
     return result
@@ -55,15 +54,20 @@ export async function calculateStatistc(){
   }
 }
 
+type RouteParams = {
+  type: PercentTypeStyleProps;
+}
 
 export function Statistic(){
-
-  const [dataStatistc,setDataStatistc] = useState<IStatistcProps>()
+  const route = useRoute()
+  const {type} = route.params as RouteParams
+  const [dataStatistic,setdataStatistic] = useState<IStatistcProps>()
+  const PERCENT_VALUE = dataStatistic  && dataStatistic?.amountMeals > 0 ? Number(((dataStatistic.mealsOnDiet/dataStatistic.amountMeals)*100).toFixed()) : 0
 
   async function fetchStatistic(){
     try {
       const data = await calculateStatistc()
-      setDataStatistc(data)    
+      setdataStatistic(data)    
     } catch (error) {
       console.log('nao foi possível calcular as estatisticas')
     }
@@ -74,11 +78,11 @@ export function Statistic(){
   },[])
 
   return(
-    <Container type="ABOVE-AVERAGE">
-      <Header type="ABOVE-AVERAGE"/>
+    <Container type={type}>
+      <Header type={type}/>
 
       <AvaregeStatistc>
-        {(dataStatistc? (dataStatistc.mealsOnDiet/dataStatistc.amountMeals)*100 : 0)}%
+        {PERCENT_VALUE}%
       </AvaregeStatistc>
       <TextStatistc>
         das refeições dentro da dieta
@@ -92,7 +96,7 @@ export function Statistic(){
         <ContentStatistc>
           <SequenceCard>
             <NumberStatistc>
-            {(dataStatistc? dataStatistc.bestSequenceOnDiet : 0)}
+            {(dataStatistic? dataStatistic.bestSequenceOnDiet : 0)}
             </NumberStatistc>
 
             <TextStatistc>
@@ -102,7 +106,7 @@ export function Statistic(){
 
           <SequenceCard>
             <NumberStatistc>
-            {(dataStatistc? dataStatistc.amountMeals : 0)}
+            {(dataStatistic? dataStatistic.amountMeals : 0)}
             </NumberStatistc>
 
             <TextStatistc>
@@ -113,7 +117,7 @@ export function Statistic(){
           <Frame>
             <InDietCard>
               <NumberStatistc>
-               {(dataStatistc? dataStatistc.mealsOnDiet : 0)}
+               {(dataStatistic? dataStatistic.mealsOnDiet : 0)}
               </NumberStatistc>
 
               <TextStatistc>
@@ -123,7 +127,7 @@ export function Statistic(){
 
             <OutDietCard>
             <NumberStatistc>
-             {(dataStatistc? dataStatistc.mealsOutDiet : 0)}
+             {(dataStatistic? dataStatistic.mealsOutDiet : 0)}
               </NumberStatistc>
 
               <TextStatistc>

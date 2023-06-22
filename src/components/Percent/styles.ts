@@ -13,7 +13,7 @@ export const Container = styled(TouchableOpacity)<Props>`
   align-items: center;
   width: 100%;
   height: 102px;
-  background-color: ${props => props.type === 'ABOVE-AVERAGE' ? props.theme.COLORS.GREEN_LIGHT : props.theme.COLORS.RED_LIGHT};
+  background-color: ${({theme,type}) => type === 'DEFAULT' ? theme.COLORS.GRAY_600 : type === 'ABOVE-AVERAGE' ?theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
   padding: 20px 16px 0;
   gap: 2px;
   border-radius: 8px;
@@ -32,7 +32,8 @@ export const SubTitle = styled.Text`
 
 export const Icon = styled(ArrowUpRight).attrs<Props>(({theme, type}) =>({
   size: 24,
-  color: type === 'ABOVE-AVERAGE' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
+  color: type === 'DEFAULT' ? theme.COLORS.GRAY_300 : type === 'ABOVE-AVERAGE' ?theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT
+ 
 }))<Props>`
   position: absolute;
   left: 100%;

@@ -1,17 +1,28 @@
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { useState, useCallback } from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/native'
-import { Container, HeaderHome, HeaderSectionList, Logo, Profile, SnackContainer, SnackText } from "./styles";
+import { Container, 
+         EmptyImage, 
+         EmptyText, 
+         EmptyTextHeading, 
+         EmptyView, 
+         HeaderHome, 
+         HeaderSectionList, 
+         Logo, 
+         Profile, 
+         SnackContainer, 
+         SnackText 
+        } from './styles';
 
 import logoImg from '../../assets/logo.png'
-import profileImg from '../../assets/profile.png'
+import emptyList from '../../assets/emptyList.png'
 
-import { Meal } from "../../components/Meal";
-import { SectionList } from "react-native";
-import { Percent } from "../../components/Percent";
-import { AddButton } from "../../components/AddButton";
+import { Meal } from '../../components/Meal';
+import { SectionList } from 'react-native';
+import { Percent } from '../../components/Percent';
+import { AddButton } from '../../components/AddButton';
 import { IStatistcProps, calculateStatistc } from '../Statistc';
-import { StatusStyleProps } from "../../components/Meal/styles";
+import { StatusStyleProps } from '../../components/Meal/styles';
 import { PercentTypeStyleProps } from '../../components/Percent/styles';
 import { mealGetAllSectionByKey } from '../../storage/Meal/mealGetAllSectionByKey';
 
@@ -21,6 +32,13 @@ export function Home(){
   const [meals, setMeals] = useState<IData[]>([])
   const [dataStatistic, setDataStatistic] = useState<IStatistcProps>()
   const [average, setAverage] = useState<PercentTypeStyleProps>('DEFAULT')
+
+  const PERCENT_VALUE = dataStatistic  && dataStatistic?.amountMeals > 0 
+    ? 
+    Number(((dataStatistic.mealsOnDiet/dataStatistic.amountMeals)*100).toFixed()) 
+    : 
+    0
+  ;
 
   interface IDataItem {
     id: number;
@@ -57,6 +75,8 @@ export function Home(){
       setAverage('ABOVE-AVERAGE')
      }else if((data !== undefined) && ((data.mealsOnDiet/data.amountMeals) < 0.5)){
       setAverage('BELOW-AVERAGE')
+     }else{
+      setAverage('DEFAULT')
      }
      setDataStatistic(data)
     }  catch (error) {
@@ -86,16 +106,20 @@ export function Home(){
     <Container>
       <HeaderHome>
         <Logo source={logoImg}/>
-        <Profile source={profileImg}/>
+        <Profile source={{uri: 'https://github.com/tiotedd.png'}}/>
       </HeaderHome>
 
-      <Percent onPress={handleStatistic} type={average} value={dataStatistic? (dataStatistic.mealsOnDiet/dataStatistic.amountMeals)*100 : 0}/>
+      <Percent 
+        onPress={handleStatistic} 
+        type={average} 
+        value={PERCENT_VALUE}
+      />
 
       <SnackContainer>
         <SnackText>
           Refeições
         </SnackText>
-        <AddButton text='Refeição' onPress={handleNewMeal}/>
+        <AddButton text='Nova refeição' onPress={handleNewMeal}/>
       </SnackContainer>
 
       <SectionList
@@ -113,6 +137,19 @@ export function Home(){
         )}
         renderSectionHeader={({section: {date}}) => (
           <HeaderSectionList >{date}</HeaderSectionList>
+        )}
+        ListEmptyComponent={() => (
+          <EmptyView>
+            <EmptyTextHeading>
+              Vamos começar!
+            </EmptyTextHeading>
+
+            <EmptyText>
+              Adicione uma <Text style={{fontWeight: '700'}}>Nova refeição</Text>.
+            </EmptyText>
+
+            <EmptyImage source={emptyList}/>
+          </EmptyView>
         )}
       />
     </Container>

@@ -24,6 +24,7 @@ export const Logo = styled.Image`
 export const Profile = styled.Image`
   width: 40px;
   height: 40px;
+  border-radius: 100px;
 `
 
 export const SnackContainer = styled.View`
@@ -45,4 +46,30 @@ export const HeaderSectionList = styled.Text`
   font-size: ${({theme}) => theme.FONT_SIZE.LG_18}px;
   font-family: ${({theme}) => theme.FONT_FAMILY.BOLD};
   color: ${({theme}) => theme.COLORS.GRAY_100};
+`
+
+export const EmptyView = styled.View`
+  display: flex;
+  align-items: center;
+  margin-top: 28px;
+`
+
+export const EmptyTextHeading = styled.Text`
+  text-align: center;
+  color: ${({theme}) => theme.COLORS.GRAY_400};
+  font-size: ${({theme}) => theme.FONT_SIZE.XL_24}px;
+  font-family: ${({theme}) => theme.FONT_FAMILY.BOLD};
+`
+
+export const EmptyText = styled.Text`
+  text-align: center;
+  color: ${({theme}) => theme.COLORS.GRAY_400};
+  font-size: ${({theme}) => theme.FONT_SIZE.MD_16}px;
+  font-family: ${({theme}) => theme.FONT_FAMILY.REGULAR};
+`
+
+export const EmptyImage = styled.Image`
+  margin-top: 16px;
+  width: 318px;
+  height: 296px;
 `

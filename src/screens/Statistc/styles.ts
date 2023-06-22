@@ -10,7 +10,7 @@ export const Container = styled.View<Props>`
   align-items: center;
   width: 100%;
   height: 100%; 
-  background-color: ${({theme,type}) => type === 'DEFAULT' ? theme.COLORS.GRAY_100 : type === 'ABOVE-AVERAGE' ?theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+  background-color: ${({theme,type}) => type === 'DEFAULT' ? theme.COLORS.GRAY_600 : type === 'ABOVE-AVERAGE' ?theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `
 
 export const AvaregeStatistc = styled.Text`
