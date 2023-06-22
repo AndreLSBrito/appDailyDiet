@@ -1,15 +1,19 @@
+import { useEffect } from "react";
+import { mealGetAll } from "../../storage/Meal/mealGetAll";
+import { mealStorageDTO } from "../../storage/Meal/mealStorageDTO";
 import { Container, SubTitle, Title, Icon, PercentTypeStyleProps } from "./styles";
 import { TouchableOpacityProps } from "react-native";
 
 type Props = TouchableOpacityProps & {
   type: PercentTypeStyleProps
+  value?: number 
 }
 
-export function Percent({type='ABOVE-AVERAGE', ...rest}:Props){
+export function Percent({type='ABOVE-AVERAGE', value =0, ...rest}:Props){
   return(
     <Container type={type} {...rest}>
       <Title>
-        90,86%
+        {value}%
       </Title>
       <SubTitle>
         das refeições dentro da dieta
