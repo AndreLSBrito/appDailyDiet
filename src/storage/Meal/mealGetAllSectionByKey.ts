@@ -4,7 +4,7 @@ export async function mealGetAllSectionByKey() {
 
   try {
     const storageKeys = await AsyncStorage.getAllKeys()
-    const meal = storageKeys
+    const meal = storageKeys !== undefined
       ? await Promise.all(
           storageKeys.map(async (key) => {
             const data = await AsyncStorage.getItem(key)
@@ -17,7 +17,8 @@ export async function mealGetAllSectionByKey() {
           })
         )
       : []
-    return meal
+      const result = meal??[]
+    return result
   } catch (error) {
     throw error
     console.log('error em buscar as refeições')

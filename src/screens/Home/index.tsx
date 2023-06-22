@@ -10,13 +10,17 @@ import { Meal } from "../../components/Meal";
 import { SectionList } from "react-native";
 import { Percent } from "../../components/Percent";
 import { AddButton } from "../../components/AddButton";
+import { IStatistcProps, calculateStatistc } from '../Statistc';
 import { StatusStyleProps } from "../../components/Meal/styles";
+import { PercentTypeStyleProps } from '../../components/Percent/styles';
 import { mealGetAllSectionByKey } from '../../storage/Meal/mealGetAllSectionByKey';
 
 export function Home(){
 
   const navigation = useNavigation()
-  const [meals, setMeals] = useState<(IData | undefined)[]>([])
+  const [meals, setMeals] = useState<IData[]>([])
+  const [dataStatistic, setDataStatistic] = useState<IStatistcProps>()
+  const [average, setAverage] = useState<PercentTypeStyleProps>('DEFAULT')
 
   interface IDataItem {
     id: number;
@@ -34,19 +38,35 @@ export function Home(){
   async function loadData(){
     try {
       const storage = await mealGetAllSectionByKey()
-      if (storage !== undefined && storage !== null) {
-        setMeals(storage);
-      } else {
-        setMeals([]);
+      if(storage !== undefined || storage !== null ){
+        setMeals(storage)
+      }else{
+        setMeals([])
       }
+      return []
     }  catch (error) {
       Alert.alert('Ops..', 'Não foi possível carregar as refeições');
       console.log(error)
     }
   }
 
+  async function loadStatistic(){
+    try {
+     const data = await calculateStatistc()
+     if((data !== undefined) && ((data.mealsOnDiet/data.amountMeals) >= 0.5)){
+      setAverage('ABOVE-AVERAGE')
+     }else if((data !== undefined) && ((data.mealsOnDiet/data.amountMeals) < 0.5)){
+      setAverage('BELOW-AVERAGE')
+     }
+     setDataStatistic(data)
+    }  catch (error) {
+      Alert.alert('Ops..', 'Não foi possível calcular as estatísticas');
+      console.log(error)
+    }
+  }
+
   function handleStatistic(){
-    navigation.navigate('statistic', {type: "ABOVE-AVERAGE"})
+    navigation.navigate('statistic', {type: average})
   }
 
   function handleNewMeal(){
@@ -59,6 +79,7 @@ export function Home(){
 
   useFocusEffect(useCallback(() => {
     loadData();
+    loadStatistic();
   }, []));
 
   return(
@@ -68,7 +89,7 @@ export function Home(){
         <Profile source={profileImg}/>
       </HeaderHome>
 
-      <Percent onPress={handleStatistic} type='ABOVE-AVERAGE'/>
+      <Percent onPress={handleStatistic} type={average} value={dataStatistic? (dataStatistic.mealsOnDiet/dataStatistic.amountMeals)*100 : 0}/>
 
       <SnackContainer>
         <SnackText>
@@ -78,7 +99,7 @@ export function Home(){
       </SnackContainer>
 
       <SectionList
-        sections={meals ?? []}
+        sections={meals}
         keyExtractor={({id}) => String(id)}
         renderItem={({item}) => (
           <Meal 
