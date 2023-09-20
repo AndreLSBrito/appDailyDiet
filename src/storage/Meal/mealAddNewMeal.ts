@@ -19,7 +19,6 @@ export async function mealAddNewMeal(newMeal: mealStorageDTO) {
 
     await AsyncStorage.setItem(newMeal.date, storage);
 
-    console.log('Nova refeição adicionada com sucesso!');
   } catch (error) {
     console.error('Erro ao adicionar nova refeição:', error);
     // Trate o erro de acordo com suas necessidades.

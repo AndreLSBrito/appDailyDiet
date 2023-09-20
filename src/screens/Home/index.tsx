@@ -130,8 +130,7 @@ export function Home(){
             meal={item.name} 
             type={item.type} 
             onPress={() => handleGetMeal(item.id)} 
-            onRender={() => console.log('asdasdasdasd')
-          }/>
+          />
         
         )}
         renderSectionHeader={({section: {date}}) => (

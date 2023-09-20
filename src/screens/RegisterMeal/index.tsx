@@ -70,13 +70,11 @@ export function RegisterMeal(){
   }
   
   function handleConfirmDate(date:Date){
-    console.log("A date has been picked: ", date.toLocaleDateString());
     setDate(date.toLocaleDateString())
     setDatePickerVisibility(false)
   };
 
   function handleConfirmTime(time:Date){
-    console.log("A time has been picked: ", time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }));
     setTime(time.toLocaleTimeString('pt-br',{ hour: 'numeric', minute: 'numeric' }))
     setTimePickerVisibility(false)
   };
@@ -179,14 +177,14 @@ export function RegisterMeal(){
               isVisible={isDatePickerVisible}
               mode="date"
               onConfirm={(date) => handleConfirmDate(date)}
-              onCancel={() => {console.log('cancelou'); setDatePickerVisibility(false);}}
+              onCancel={() => {setDatePickerVisibility(false);}}
             />
             {/* componentente para renderizar o modal de hora  */}
             <DateTimePickerModal 
               isVisible={isTimePickerVisible}
               mode="time"
               onConfirm={(time) => handleConfirmTime(time)}
-              onCancel={() => {console.log('cancelou'); setTimePickerVisibility(false);}}
+              onCancel={() => {setTimePickerVisibility(false);}}
             />
           </ContainerRow>
 
