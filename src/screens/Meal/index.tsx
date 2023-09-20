@@ -97,7 +97,7 @@ export function Meal(){
                 </ModalText>
 
                 <ModalButtonContainer>
-                  <Button text="Cancelar" type="SECONDARY"/>
+                  <Button text="Cancelar" type="SECONDARY" onPress={() => setModalVisible(!modalVisible)}/>
                   <Button text="Sim, excluir" onPress={()=>handleRemoveMeal(meal?.date??'')}/>
                 </ModalButtonContainer>
               </ModalView>
