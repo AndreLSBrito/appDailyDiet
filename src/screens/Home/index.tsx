@@ -26,6 +26,19 @@ import { StatusStyleProps } from '../../components/Meal/styles';
 import { PercentTypeStyleProps } from '../../components/Percent/styles';
 import { mealGetAllSectionByKey } from '../../storage/Meal/mealGetAllSectionByKey';
 
+interface IDataItem {
+  id: number;
+  time: string;
+  name: string;
+  description: string;
+  type: StatusStyleProps;
+}
+
+export interface IData {
+  date: string;
+  data: IDataItem[];
+}
+
 export function Home(){
 
   const navigation = useNavigation()
@@ -40,28 +53,14 @@ export function Home(){
     0
   ;
 
-  interface IDataItem {
-    id: number;
-    time: string;
-    name: string;
-    description: string;
-    type: StatusStyleProps;
-  }
-  
-  interface IData {
-    date: string;
-    data: IDataItem[];
-  }
-
   async function loadData(){
     try {
       const storage = await mealGetAllSectionByKey()
-      if(storage !== undefined || storage !== null ){
+      if(storage){
         setMeals(storage)
       }else{
         setMeals([])
       }
-      return []
     }  catch (error) {
       Alert.alert('Ops..', 'Não foi possível carregar as refeições');
       console.log(error)
